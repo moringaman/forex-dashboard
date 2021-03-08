@@ -1,0 +1,44 @@
+import React, { useEffect, useState } from "react";
+import api from "../lib/api";
+import { Container, Card } from "semantic-ui-react";
+import PairBox from "../components/pairBox";
+
+const DashBoard = () => {
+  const [data, setData] = useState({});
+  const [pairs, setPairs] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    console.log("DASHBOARD  DATA ", data.rates);
+    if (data["rates"] !== undefined) {
+      let myPairs = Object.keys(data.rates);
+      setPairs([...myPairs]);
+      console.log(pairs);
+    }
+  }, [data]);
+
+  const getData = async () => {
+    setInterval(async () => {
+      const myData = await api.send("/pairs", "GET", null);
+      // console.log("Fetching pair data...");
+      setData(myData);
+    }, 1000);
+  };
+
+  return (
+    <>
+      <Container fluid>
+        <h1>Welcome to the Forex DashBoard</h1>
+        {pairs.length > 0 &&
+          pairs.map((pair, i) => (
+            <PairBox title={pair} data={data.rates} key={i} />
+          ))}
+      </Container>
+    </>
+  );
+};
+
+export default DashBoard;
