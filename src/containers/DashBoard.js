@@ -21,7 +21,7 @@ const DashBoard = () => {
   }, [data]);
 
   const getData = async () => {
-    let interval = 10000;
+    let interval = 5000;
     const myData = await api.send("/pairs", "GET", null);
     // console.log("Fetching pair data...");
     setData(myData);
@@ -35,10 +35,8 @@ const DashBoard = () => {
   return (
     <>
       <Container fluid>
-        <h1>Welcome to the Forex DashBoard</h1>
-        <div
-          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
-        >
+        <h1>Forex DashBoard</h1>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {pairs.length > 0 &&
             pairs.map((pair, i) => (
               <PairBox title={pair} data={data.rates[pair]} key={i} />
